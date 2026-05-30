@@ -17,8 +17,13 @@ export default function AuthLayout() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md">
+    <div
+      className="flex min-h-screen items-center justify-center px-4 py-12"
+      style={{
+        background: 'linear-gradient(135deg, #f8f4ff 0%)'
+      }}
+    >
+      <div className="w-full max-w-sm">
         <Outlet />
       </div>
     </div>
