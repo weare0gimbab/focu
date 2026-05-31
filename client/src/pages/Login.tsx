@@ -27,42 +27,29 @@ export default function Login() {
     try {
       await login({ email, password })
       navigate('/dashboard', { replace: true })
-    } catch (err: any) {
-      setError(err.response?.data?.message ?? '로그인에 실패했습니다.')
+    } catch (err: unknown) {
+      const axiosErr = err as { response?: { data?: { message?: string } } }
+      setError(axiosErr.response?.data?.message ?? '로그인에 실패했습니다.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div
-      className="w-full rounded-2xl bg-white p-8 shadow-xl"
-      style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.10)' }}
-    >
+    <div className="w-full rounded-2xl bg-white p-8 shadow-xl">
       {/* Header */}
       <div className="mb-8 text-center">
-        <div
-          className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
-          style={{ background: 'linear-gradient(135deg, #FF8C8C 0%, #FF6464 100%)' }}
-        >
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF8C8C] to-[#FF6464]">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
             <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 5a3 3 0 1 1-3 3 3 3 0 0 1 3-3Zm0 13a7.93 7.93 0 0 1-6-2.75A6 6 0 0 1 12 14a6 6 0 0 1 6 3.25A7.93 7.93 0 0 1 12 20Z" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold" style={{ color: '#08060d', letterSpacing: '-0.5px' }}>
-          로그인
-        </h1>
-        <p className="mt-1 text-sm" style={{ color: '#6b6375' }}>
-          계정에 로그인하세요
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--text-h)]">로그인</h1>
+        <p className="mt-1 text-sm text-[var(--text)]">계정에 로그인하세요</p>
       </div>
 
-      {/* Error Message */}
       {error && (
-        <div
-          className="mb-5 flex items-center gap-2 rounded-lg px-4 py-3 text-sm"
-          style={{ background: '#fff1f0', color: '#cf1322', border: '1px solid #ffa39e' }}
-        >
+        <div className="mb-5 flex items-center gap-2 rounded-lg border border-[#ffa39e] bg-[#fff1f0] px-4 py-3 text-sm text-[#cf1322]">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="shrink-0">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Zm1 15h-2v-2h2v2Zm0-4h-2V7h2v6Z" />
           </svg>
@@ -70,24 +57,10 @@ export default function Login() {
         </div>
       )}
 
-      {/* Kakao Login Button */}
+      {/* Kakao Login */}
       <a
         href={KAKAO_AUTH_URL}
-        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-xl py-3 text-sm font-semibold transition-all duration-150"
-        style={{
-          background: '#FEE500',
-          color: 'rgba(0,0,0,0.85)',
-          textDecoration: 'none',
-          border: '1px solid transparent'
-        }}
-        onMouseEnter={(e) => {
-          ;(e.currentTarget as HTMLAnchorElement).style.background = '#F0D900'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 4px 12px rgba(254,229,0,0.5)'
-        }}
-        onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLAnchorElement).style.background = '#FEE500'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none'
-        }}
+        className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#FEE500] py-3 text-sm font-semibold text-black/85 no-underline transition-all duration-150 hover:bg-[#F0D900] hover:shadow-[0_4px_12px_rgba(254,229,0,0.5)]"
       >
         <KakaoIcon />
         카카오로 로그인
@@ -95,55 +68,30 @@ export default function Login() {
 
       {/* Divider */}
       <div className="relative my-5 flex items-center">
-        <div className="flex-1" style={{ height: '1px', background: '#e5e4e7' }} />
-        <span className="mx-3 text-xs font-medium" style={{ color: '#9ca3af' }}>
-          또는 이메일로 로그인
-        </span>
-        <div className="flex-1" style={{ height: '1px', background: '#e5e4e7' }} />
+        <div className="h-px flex-1 bg-[var(--border)]" />
+        <span className="mx-3 text-xs font-medium text-[var(--text)]">또는 이메일로 로그인</span>
+        <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
 
-      {/* Email / Password Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="mb-1.5 block text-sm font-medium" style={{ color: '#374151' }}>
-            이메일
-          </label>
+          <label className="mb-1.5 block text-sm font-medium text-gray-700">이메일</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="example@email.com"
             required
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none transition-all duration-150"
-            style={{
-              border: '1.5px solid #e5e4e7',
-              background: '#fafafa',
-              color: '#08060d'
-            }}
-            onFocus={(e) => {
-              e.target.style.border = '1.5px solid #aa3bff'
-              e.target.style.boxShadow = '0 0 0 3px rgba(170,59,255,0.12)'
-              e.target.style.background = '#fff'
-            }}
-            onBlur={(e) => {
-              e.target.style.border = '1.5px solid #e5e4e7'
-              e.target.style.boxShadow = 'none'
-              e.target.style.background = '#fafafa'
-            }}
+            className="w-full rounded-xl border border-[var(--border)] bg-[#fafafa] px-4 py-2.5 text-sm text-[var(--text-h)] outline-none transition-all duration-150 focus:border-[var(--accent)] focus:bg-white focus:ring-2 focus:ring-[var(--accent-border)]"
           />
         </div>
 
         <div>
           <div className="mb-1.5 flex items-center justify-between">
-            <label className="text-sm font-medium" style={{ color: '#374151' }}>
-              비밀번호
-            </label>
+            <label className="text-sm font-medium text-gray-700">비밀번호</label>
             <Link
               to="/auth/reset-password"
-              className="text-xs transition-colors duration-150"
-              style={{ color: '', textDecoration: 'none' }}
-              onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#FF8C8C')}
-              onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#FF8C8C')}
+              className="text-xs text-[#FF8C8C] no-underline transition-colors hover:text-[#FF6464]"
             >
               비밀번호 재설정
             </Link>
@@ -154,54 +102,24 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
             required
-            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none transition-all duration-150"
-            style={{
-              border: '1.5px solid #e5e4e7',
-              background: '#fafafa',
-              color: '#08060d'
-            }}
-            onFocus={(e) => {
-              e.target.style.border = '1.5px solid #aa3bff'
-              e.target.style.boxShadow = '0 0 0 3px rgba(170,59,255,0.12)'
-              e.target.style.background = '#fff'
-            }}
-            onBlur={(e) => {
-              e.target.style.border = '1.5px solid #e5e4e7'
-              e.target.style.boxShadow = 'none'
-              e.target.style.background = '#fafafa'
-            }}
+            className="w-full rounded-xl border border-[var(--border)] bg-[#fafafa] px-4 py-2.5 text-sm text-[var(--text-h)] outline-none transition-all duration-150 focus:border-[var(--accent)] focus:bg-white focus:ring-2 focus:ring-[var(--accent-border)]"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-xl py-2.5 text-sm font-semibold text-white transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50"
-          style={{
-            background: loading ? '#9ca3af' : 'linear-gradient(135deg, #FF8C8C 0%, #FF8C8C 100%)'
-          }}
-          onMouseEnter={(e) => {
-            if (!loading)
-              (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                '0 4px 14px rgba(170,59,255,0.45)'
-          }}
-          onMouseLeave={(e) => {
-            ;(e.currentTarget as HTMLButtonElement).style.boxShadow = 'none'
-          }}
+          className="w-full rounded-xl bg-[#FF8C8C] py-2.5 text-sm font-semibold text-white transition-all duration-150 hover:shadow-[0_4px_14px_rgba(255,140,140,0.45)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading ? '로그인 중...' : '로그인'}
         </button>
       </form>
 
-      {/* Register Link */}
-      <p className="mt-5 text-center text-sm" style={{ color: '#6b6375' }}>
+      <p className="mt-5 text-center text-sm text-[var(--text)]">
         계정이 없으신가요?{' '}
         <Link
           to="/auth/register"
-          className="font-semibold transition-colors duration-150"
-          style={{ color: '#aa3bff', textDecoration: 'none' }}
-          onMouseEnter={(e) => ((e.target as HTMLElement).style.color = '#7c3aed')}
-          onMouseLeave={(e) => ((e.target as HTMLElement).style.color = '#aa3bff')}
+          className="font-semibold text-[var(--accent)] no-underline transition-colors hover:text-[#7c3aed]"
         >
           회원가입
         </Link>

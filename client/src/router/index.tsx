@@ -6,6 +6,7 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Dashboard from '../pages/Dashboard'
 import ResetPassword from '../pages/ResetPassword'
+import OAuthSuccess from '../pages/OAuthSuccess'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
       { index: true, element: <Navigate to="/auth/login" replace /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
-      { path: 'reset-password', element: <ResetPassword /> }
+      { path: 'reset-password', element: <ResetPassword /> },
+      { path: 'oauth/success', element: <OAuthSuccess /> },
     ]
   }
 ])
