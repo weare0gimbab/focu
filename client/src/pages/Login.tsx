@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 
 const KAKAO_AUTH_URL = 'http://localhost:8080/oauth2/authorization/kakao'
@@ -14,11 +14,18 @@ function KakaoIcon() {
 
 export default function Login() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { login } = useAuthStore()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('error') === 'oauth') {
+      setError('카카오 로그인에 실패했습니다. 다시 시도해 주세요.')
+    }
+  }, [searchParams])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -63,7 +70,7 @@ export default function Login() {
         className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-xl bg-[#FEE500] py-3 text-sm font-semibold text-black/85 no-underline transition-all duration-150 hover:bg-[#F0D900] hover:shadow-[0_4px_12px_rgba(254,229,0,0.5)]"
       >
         <KakaoIcon />
-        카카오로 로그인
+        카카오로 시작하기
       </a>
 
       {/* Divider */}

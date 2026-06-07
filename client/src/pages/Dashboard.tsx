@@ -1,3 +1,4 @@
+import NewsCard from '../components/news/NewsCard'
 import { useAuthStore } from '../store/authStore'
 
 export default function Dashboard() {
@@ -9,6 +10,9 @@ export default function Dashboard() {
       <p className="text-gray-600">
         안녕하세요, <strong>{user?.nickname}</strong>님!
       </p>
+      <div className="mt-6 space-y-4">
+        <NewsCard />
+      </div>
     </div>
   )
 }
