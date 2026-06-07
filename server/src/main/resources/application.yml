@@ -38,6 +38,7 @@ spring:
           auth: true
           starttls:
             enable: true
+
   security:
     oauth2:
       client:
@@ -73,3 +74,7 @@ logging:
   level:
     org: debug
     org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+
+public-api:
+  news:
+    service-key: ${NEWS_SERVICE_KEY}
