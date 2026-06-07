@@ -25,7 +25,7 @@ public class MailService {
         message.setTo(toEmail);
         message.setSubject("비밀번호 재설정 안내");
 
-        String resetUrl = "http://localhost:3000/auth/reset-password?email="
+        String resetUrl = "http://localhost:5173/auth/reset-password?email="
                 + toEmail + "&token=" + token;
 
         String text = "안녕하세요, pocu입니다.\n\n" +

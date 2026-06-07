@@ -26,10 +26,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
 
+        if (kakaoAccount == null) {
+            throw new OAuth2AuthenticationException("kakao_account not found – check Kakao app scope settings");
+        }
+
         String email = (String) kakaoAccount.get("email");
 
         if (email == null) {
-            throw new OAuth2AuthenticationException("Email not found from OAuth2 provider");
+            throw new OAuth2AuthenticationException("Email not found – user may not have consented to email sharing");
         }
 
         Member member = memberService.oauthRegister(email, registrationId);

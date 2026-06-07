@@ -60,7 +60,8 @@ public class SecurityConfig {
                                 .oauth2Login((oauth2) -> oauth2
                                                 .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                                                 .userService(customOAuth2UserService))
-                                                .successHandler(handlers.oauthSuccessHandler()))
+                                                .successHandler(handlers.oauthSuccessHandler())
+                                                .failureHandler(handlers.oauthFailureHandler()))
 
                                 .exceptionHandling(ex -> ex
                                                 .authenticationEntryPoint((request, response, authException) -> {
@@ -79,7 +80,7 @@ public class SecurityConfig {
                                                                 "/api/v1/auth/email/verify/**",
                                                                 "/api/v1/auth/reset-password/**",
                                                                 "/api/v1/auth/token/refresh",
-                                                                "/api/v1/auth/login",
+                                                                "/api/v1/auth/login/**",
                                                                 "/api/v1/auth/token/logout",
                                                                 "/api/v1/auth/check-nickname",
                                                                 "/error")

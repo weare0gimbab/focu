@@ -15,7 +15,7 @@ import com.demo.global.security.CustomUserDetails;
 
 import java.io.IOException;
 
-import static com.demo.global.security.jwt.JwtContents.REFRESH_COOKIE_PATH;
+import static com.demo.global.security.jwt.JwtContents.REFRESH_ENDPOINT;
 import static com.demo.global.security.jwt.JwtContents.TOKEN_TYPE_ACCESS;
 
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (request.getRequestURI().equals(REFRESH_COOKIE_PATH)) {
+        if (request.getRequestURI().equals(REFRESH_ENDPOINT)) {
             filterChain.doFilter(request, response);
             return;
         }

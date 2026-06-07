@@ -12,4 +12,5 @@ public class JwtContents {
     public static final int REFRESH_TOKEN_EXPIRE_SECONDS = 60 * 60 * 24;
 
     public static final String REFRESH_COOKIE_PATH = "/api/v1/auth/token";
+    public static final String REFRESH_ENDPOINT = "/api/v1/auth/token/refresh";
 }

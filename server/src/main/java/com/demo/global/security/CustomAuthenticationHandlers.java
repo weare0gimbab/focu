@@ -1,10 +1,13 @@
 package com.demo.global.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import com.demo.global.security.jwt.JwtContents;
 import com.demo.global.security.jwt.JwtUtil;
+import com.demo.global.redis.RedisKeys;
 import com.demo.global.redis.RedisRepository;
 import com.demo.global.util.CookieUtil;
 
@@ -12,6 +15,7 @@ import java.time.Duration;
 
 import static com.demo.global.security.jwt.JwtContents.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationHandlers {
@@ -28,12 +32,21 @@ public class CustomAuthenticationHandlers {
 
             String refreshToken = jwtUtil.createJwt(TOKEN_TYPE_REFRESH, email, role, memberId,
                     REFRESH_TOKEN_EXPIRE_MILLIS);
-            redisRepository.setValue(refreshToken, "value",
+            redisRepository.setValue(
+                    RedisKeys.refreshToken(memberId, jwtUtil.getJti(refreshToken)),
+                    "valid",
                     Duration.ofSeconds(JwtContents.REFRESH_TOKEN_EXPIRE_SECONDS));
 
             response.addCookie(CookieUtil.createCookie(TOKEN_TYPE_REFRESH, refreshToken, REFRESH_COOKIE_PATH,
                     REFRESH_TOKEN_EXPIRE_SECONDS));
-            response.sendRedirect("http://localhost:3000/auth/oauth/success");
+            response.sendRedirect("http://localhost:5173/auth/oauth/success");
+        };
+    }
+
+    public AuthenticationFailureHandler oauthFailureHandler() {
+        return (request, response, exception) -> {
+            log.error("OAuth2 authentication failed: {}", exception.getMessage(), exception);
+            response.sendRedirect("http://localhost:5173/auth/login?error=oauth");
         };
     }
 }
