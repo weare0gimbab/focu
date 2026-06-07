@@ -27,3 +27,7 @@ jobs:
         run: mvn clean install
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          KAKAO_CLIENT_ID: dummy
+          KAKAO_CLIENT_SECRET: dummy
+          MAIL_USERNAME: dummy
+          MAIL_PASSWORD: dummy
